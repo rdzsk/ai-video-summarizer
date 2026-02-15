@@ -4,16 +4,16 @@ from youtube import download_video
 from summarize import vtt_to_txt
 from local import audio_to_txt
 
-def summarize_video(video_url: str):
+def summarize_video(video_url: str, obsidian: Path):
     project_root=Path.cwd()
     download_dir=project_root / "downloads"
-    video_id =download_video(video_url) 
+    video_name,video_id =download_video(video_url) 
     video_file=download_dir/f"{video_id}.mp3"
 
     try:
         audio_to_txt(video_id)
         return {
-            "summary":vtt_to_txt(video_id)
+            "summary":vtt_to_txt(video_id,video_name,obsidian)
         }
 
     except Exception as e:
@@ -35,8 +35,9 @@ def summarize_video(video_url: str):
 if __name__ == "__main__":
     while True:
         url = input("URL: ")
+        obsidian = Path(input("Obsidian vault path: "))
         try:
-            summarize_video(url)
+            summarize_video(url,obsidian)
             break
         except Exception as e:
             print(f"ERROR {e}")

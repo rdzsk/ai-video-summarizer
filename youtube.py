@@ -29,6 +29,7 @@ def download_video(video_url: str) -> Path:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=True)
             video_id = info["id"]
+            video_name = info["title"]
     except Exception as e:
         print(f"ERROR {e}")
-    return video_id
+    return video_name,video_id
